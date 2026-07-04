@@ -1,0 +1,19 @@
+11
+.env
+node_modules/
+dist/
+.expo/
+ios/
+android/
+*.log
+.DS_Store
+firebase-service-account.json
+
+# PKB Presentation assets
+PKB_Presentation.pptx
+logo.png
+product.png
+cover_bg.png
+create_pkb_ppt.py
+test_trans.pptx
+*.pptx
