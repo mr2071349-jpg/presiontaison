@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKB - Premium Disposable Paper Plates</title>
+    <style>
+        :root {
+            --dark-green: #1b5e20;
+            --light-green: #2e7d32;
+            --gold: #d4a017;
+            --white: #ffffff;
+            --black: #212121;
+            --light-gray: #f5f5f5;
+            --accent-red: #c62828;
+            --accent-blue: #1565c0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Scroll Snap Container */
+        .presentation-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        /* Individual Slides */
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            overflow: hidden;
+        }
+
+        /* Slide Transitions/Animations */
+        .animate-item {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide.active .animate-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delay for child elements */
+        .slide.active .delay-1 { transition-delay: 0.1s; }
+        .slide.active .delay-2 { transition-delay: 0.2s; }
+        .slide.active .delay-3 { transition-delay: 0.3s; }
+        .slide.active .delay-4 { transition-delay: 0.4s; }
+        .slide.active .delay-5 { transition-delay: 0.5s; }
+
+        /* Slide 1: Cover Slide */
+        #slide1 {
+            background: linear-gradient(rgba(13, 48, 16, 0.85), rgba(13, 48, 16, 0.85)), url('cover_bg.png') no-repeat center center/cover;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .logo-container img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid var(--gold);
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: pulse-logo 3s infinite ease-in-out;
+            transform: scale(0.3);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #slide1.active .logo-container img {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        @keyframes pulse-logo {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(212, 160, 23, 0.3); }
+        }
+
+        .brand-title {
+            font-size: 5rem;
+            color: var(--gold);
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .brand-tagline {
+            font-size: 2rem;
+            color: var(--white);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .brand-badges {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.95rem;
+            color: #a5d6a7;
+        }
+
+        /* Slide 2: About PKB */
+        #slide2 {
+            background-color: var(--white);
+            color: var(--black);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-content: center;
+        }
+
+        .about-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-header {
+            font-size: 2.5rem;
+            color: var(--dark-green);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--gold);
+            padding-left: 15px;
+        }
+
+        .about-subtitle {
+            font-size: 1.8rem;
+            color: var(--light-green);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .about-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .about-list li {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: translateX(100px);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #slide2.active .about-image img {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Slide 3: Products & Pricing */
+        #slide3 {
+            background-color: var(--light-gray);
+            color: var(--black);
+            flex-direction: column;
+        }
+
+        .pricing-container {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+        }
+
+        .price-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            padding: 40px;
+            text-align: center;
+            flex: 1;
+            max-width: 450px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border-color: var(--light-green);
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: var(--dark-green);
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 1.1rem;
+            color: #757575;
+            margin-bottom: 25px;
+        }
+
+        .price-tag {
+            background: var(--accent-red);
+            color: var(--white);
+            font-size: 2.2rem;
+            font-weight: 700;
+            padding: 10px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(198, 40, 40, 0.3);
+        }
+
+        /* Slide 4: Why Choose Us */
+        #slide4 {
+            background-color: var(--white);
+            color: var(--black);
+            flex-direction: column;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 40px;
+        }
+
+        .grid-card {
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .grid-card:nth-child(even) {
+            background: #fff8e1;
+        }
+
+        .grid-card:hover {
+            transform: scale(1.05);
+        }
+
+        .grid-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .grid-title {
+            font-size: 1.4rem;
+            color: var(--dark-green);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .grid-desc {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* Slide 5: Order Details */
+        #slide5 {
+            background-color: var(--light-gray);
+            color: var(--black);
+            flex-direction: column;
+        }
+
+        .order-card {
+            background: #e3f2fd;
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 2px solid #90caf9;
+        }
+
+        .order-title {
+            font-size: 2.2rem;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+        }
+
+        .phone-number {
+            font-size: 2.5rem;
+            color: var(--dark-green);
+            font-weight: 700;
+            margin: 20px 0;
+            display: inline-block;
+            animation: pulse-phone 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-phone {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); color: var(--light-green); }
+        }
+
+        .btn-order {
+            background: var(--accent-red);
+            color: var(--white);
+            text-decoration: none;
+            padding: 15px 40px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(198, 40, 40, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .btn-order:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(198, 40, 40, 0.6);
+            background: #b71c1c;
+        }
+
+        /* Slide 6: Thank You */
+        #slide6 {
+            background: linear-gradient(rgba(13, 48, 16, 0.9), rgba(13, 48, 16, 0.9)), url('cover_bg.png') no-repeat center center/cover;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .thanks-title {
+            font-size: 4.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            margin-top: 30px;
+            font-size: 1.3rem;
+            line-height: 2;
+        }
+
+        /* Navigation dots */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--gold);
+            transform: scale(1.4);
+        }
+
+        /* Controls Indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Slide Navigation Dots -->
+    <div class="nav-dots">
+        <div class="dot active" onclick="scrollToSlide(1)"></div>
+        <div class="dot" onclick="scrollToSlide(2)"></div>
+        <div class="dot" onclick="scrollToSlide(3)"></div>
+        <div class="dot" onclick="scrollToSlide(4)"></div>
+        <div class="dot" onclick="scrollToSlide(5)"></div>
+        <div class="dot" onclick="scrollToSlide(6)"></div>
+    </div>
+
+    <!-- Presentation Container -->
+    <div class="presentation-container" id="presentation">
+        
+        <!-- Slide 1 -->
+        <section class="slide active" id="slide1">
+            <div class="logo-container">
+                <img src="logo.png" alt="PKB Logo">
+            </div>
+            <h1 class="brand-title animate-item delay-1">PKB</h1>
+            <p class="brand-tagline animate-item delay-2">Quality Disposable Paper Plates</p>
+            <div class="brand-badges animate-item delay-3">
+                <span class="badge">🍀 Eco-Friendly</span>
+                <span class="badge">💎 Premium Quality</span>
+                <span class="badge">🔥 Best Pricing</span>
+            </div>
+            <div class="scroll-hint">
+                <span>Scroll Down</span>
+                <span>👇</span>
+            </div>
+        </section>
+
+        <!-- Slide 2 -->
+        <section class="slide" id="slide2">
+            <div class="about-text">
+                <h2 class="section-header animate-item delay-1">About PKB</h2>
+                <h3 class="about-subtitle animate-item delay-2">PKB - Aapka Bharosemand Brand!</h3>
+                <p class="animate-item delay-3" style="font-size: 1.25rem; line-height: 1.6; color: #555;">
+                    Hum provide karte hain best quality disposable paper plates jo perfect hain shadiyo, parties, street food, aur daily home events ke liye. Silver foil coating plates ko leak-proof aur food-safe banati hai.
+                </p>
+                <ul class="about-list animate-item delay-4">
+                    <li>✅ Shaadi & Functions ke liye</li>
+                    <li>✅ Parties & Events ke liye</li>
+                    <li>✅ Street Food & Catering ke liye</li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <img src="product.png" alt="PKB Paper Plates Product">
+            </div>
+        </section>
+
+        <!-- Slide 3 -->
+        <section class="slide" id="slide3">
+            <h2 class="section-header animate-item delay-1">Our Products & Pricing</h2>
+            <p class="animate-item delay-2" style="font-size: 1.2rem; color: #666;">Har occasion ke liye correct size and pricing</p>
+            
+            <div class="pricing-container">
+                <!-- Small Size -->
+                <div class="price-card animate-item delay-3">
+                    <div class="card-icon">🍽️</div>
+                    <h3 class="card-title">Small Size Plate</h3>
+                    <p class="card-desc">Perfect for snacks, sweets, starters & street food.</p>
+                    <span class="price-tag">₹20 Only</span>
+                </div>
+                <!-- Large Size -->
+                <div class="price-card animate-item delay-4">
+                    <div class="card-icon">🍛</div>
+                    <h3 class="card-title">Large Plate</h3>
+                    <p class="card-desc">Perfect for full meals, rice, lunch & dinner buffets.</p>
+                    <span class="price-tag">₹40 Only</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4 -->
+        <section class="slide" id="slide4">
+            <h2 class="section-header animate-item delay-1">Why Choose PKB?</h2>
+            <div class="grid-container">
+                <div class="grid-card animate-item delay-2">
+                    <div class="grid-icon">🏆</div>
+                    <div class="grid-title">Premium Quality</div>
+                    <div class="grid-desc">High-grade silver foil paper plates jo heavy load handles karti hain</div>
+                </div>
+                <div class="grid-card animate-item delay-3">
+                    <div class="grid-icon">💰</div>
+                    <div class="grid-title">Best Price</div>
+                    <div class="grid-desc">Sabse sasta aur durable range - Starting just ₹20</div>
+                </div>
+                <div class="grid-card animate-item delay-4">
+                    <div class="grid-icon">🌿</div>
+                    <div class="grid-title">Eco-Friendly</div>
+                    <div class="grid-desc">Fully biodegradable material jo environment ko safe rakhta hai</div>
+                </div>
+                <div class="grid-card animate-item delay-3">
+                    <div class="grid-icon">🚚</div>
+                    <div class="grid-title">Fast Delivery</div>
+                    <div class="grid-desc">Quick doorstep delivery aapke events aur shops ke liye</div>
+                </div>
+                <div class="grid-card animate-item delay-4">
+                    <div class="grid-icon">📦</div>
+                    <div class="grid-title">Bulk Discount</div>
+                    <div class="grid-desc">Wholesale aur bulk orders par special heavy discount</div>
+                </div>
+                <div class="grid-card animate-item delay-5">
+                    <div class="grid-icon">🔒</div>
+                    <div class="grid-title">Food Safe</div>
+                    <div class="grid-desc">100% hygienic, leak-proof and food-safe quality check</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5 -->
+        <section class="slide" id="slide5">
+            <div class="order-card animate-item delay-1">
+                <h2 class="order-title">🛒 Order Kaise Karein?</h2>
+                <p style="font-size: 1.25rem;">Direct WhatsApp message karein ya calls se order confirm karein</p>
+                
+                <span class="phone-number animate-item delay-2">📞 +91-9318421157</span>
+                
+                <div class="animate-item delay-3">
+                    <a href="https://wa.me/919318421157" target="_blank" class="btn-order">
+                        💬 Order via WhatsApp
+                    </a>
+                </div>
+                
+                <p class="animate-item delay-4" style="margin-top: 25px; font-size: 1.1rem; color: #555; line-height: 1.5;">
+                    Steps: Link par click karein -> Plate size aur Quantity batayein -> Apna delivery address batayein. Bas ho gaya order!
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 6 -->
+        <section class="slide" id="slide6">
+            <h2 class="thanks-title animate-item delay-1">🙏 Thank You!</h2>
+            <p class="animate-item delay-2" style="font-size: 1.5rem; color: var(--gold);">PKB - Quality Disposable Paper Plates</p>
+            
+            <div class="contact-info animate-item delay-3">
+                <p>📞 Call / WhatsApp: +91-9318421157</p>
+                <p>📍 Location: Your City, India</p>
+            </div>
+            
+            <a href="https://wa.me/919318421157" target="_blank" class="btn-order animate-item delay-4" style="margin-top: 30px;">
+                🛒 Abhi Order Karein!
+            </a>
+        </section>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('presentation');
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        // Scroll detection to trigger active classes and dot active states
+        container.addEventListener('scroll', () => {
+            let currentSlideIndex = 0;
+            let maxVisibleHeight = 0;
+
+            slides.forEach((slide, index) => {
+                const rect = slide.getBoundingClientRect();
+                const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+                if (visibleHeight > maxVisibleHeight) {
+                    maxVisibleHeight = visibleHeight;
+                    currentSlideIndex = index;
+                }
+            });
+
+            // Update active states
+            slides.forEach((slide, index) => {
+                if (index === currentSlideIndex) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                if (index === currentSlideIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+
+        // Function to scroll directly to a slide index
+        function scrollToSlide(slideNum) {
+            const targetSlide = document.getElementById(`slide${slideNum}`);
+            targetSlide.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
